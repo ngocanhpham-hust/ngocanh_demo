@@ -85,7 +85,7 @@ public class MainServiceImpl implements MainService {
 
         // email
         String email = person.getEmail();
-        if (Objects.isNull(email) || !email.contains("@")) {}
+        if (Objects.isNull(email) || !email.contains("@")) {} // comment
 
         // gender
         String gender = person.getGender();
