@@ -1,11 +1,14 @@
 package com.hust.demo.service.impl;
 
+import com.hust.demo.common.MainValidate;
 import com.hust.demo.model.Person;
 import com.hust.demo.model.ServiceResponse;
 import com.hust.demo.service.MainService;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
@@ -14,6 +17,10 @@ import java.util.regex.Pattern;
 
 @Service
 public class MainServiceImpl implements MainService {
+
+    @Autowired
+    MainValidate mainValidate;
+//@Resource
 
     @Override
     public String getName(String name){
@@ -25,113 +32,22 @@ public class MainServiceImpl implements MainService {
         ServiceResponse serviceResponse = new ServiceResponse();
         // validate
 
-        // name
-        String name = person.getName();
-        if (Objects.isNull(name) || name.length() < 10 || name.length() > 100) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Name invalid");
-            return serviceResponse;
-        }
-        Pattern patternNonSpecial = Pattern.compile("[^a-zA-Z ]", Pattern.CASE_INSENSITIVE);
-        Matcher matcherName = patternNonSpecial.matcher(name);
-        boolean matchName = matcherName.find();
-        if(matchName) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Name invalid");
+        serviceResponse = mainValidate.validatePerson(person);
+        if (serviceResponse.getCode() == 0) {
             return serviceResponse;
         }
 
-        // age
-        int age = person.getAge();
-        if (age <= 0) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Age invalid");
-            return serviceResponse;
-        }
+        // process logic
 
-        //dob
-        String dob = person.getDob();
-        int age_ = person.getAge();
-        if (Objects.isNull(dob)) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Date of birth invalid");
-        }
+    //phan tích idNumber. Trả ra các thong so nhu sau
+        //https://thuvienphapluat.vn/phap-luat/ho-tro-phap-luat/ma-63-tinh-thanh-pho-su-dung-tren-the-can-cuoc-cong-dan-gan-chip-y-nghia-ma-so-can-cuoc-cong-dan-ga-986546-31326.html
+        //037xxxxxx
+        System.out.println("Tinh: Ninh binh" );
 
-        // address
-        String address  = person.getAddress();
-        if (Objects.isNull(address) || address.length() < 5 || address.length() > 500){
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Address invalid");
-            return serviceResponse;
-        }
-
-        // phoneNumber
-        String phoneNumber = person.getPhoneNumber();
-        if (phoneNumber.length() != 10 || !phoneNumber.startsWith("0") ) {
-
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Phone number invalid");
-            return serviceResponse;
-        }
-
-        Pattern patternNumber = Pattern.compile("[^0-9]", Pattern.CASE_INSENSITIVE);
-        Matcher matcherNumber = patternNumber.matcher(phoneNumber);
-        boolean matchFound = matcherNumber.find();
-        if(matchFound) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Phone number invalid");
-            return serviceResponse;
-        }
-
-        // email
-        String email = person.getEmail();
-        if (Objects.isNull(email) || !email.contains("@")) {} // comment
-
-        // gender
-        String gender = person.getGender();
-        if (Objects.isNull(gender) || (!gender.equalsIgnoreCase("Nam")) && (!gender.equalsIgnoreCase("Nữ"))){
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Gender invalid");
-            return serviceResponse;
-        }
-
-        // idNumber
-        String idNumber = person.getIdNumber();
-        if (idNumber.length() != 12) {
-
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("ID Number invalid");
-            return serviceResponse;
-        }
-
-        Matcher matcherId = patternNumber.matcher(idNumber);
-        boolean matchIdFound = matcherId.find();
-
-        if(matchIdFound) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("ID Number invalid");
-            return serviceResponse;
-        }
-
-        //issueDate
-        String issueDate = person.getIssueDate();
-        if (Objects.isNull(issueDate)) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Issue Date invalid");
-            return serviceResponse;
-        }
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setLenient(false);
-            sdf.parse(issueDate);
-        } catch (ParseException e) {
-            serviceResponse.setCode(0);
-            serviceResponse.setMsg("Issue Date invalid");
-            return serviceResponse;
-        }
 
         return serviceResponse;
 
 
     }
+
 }
