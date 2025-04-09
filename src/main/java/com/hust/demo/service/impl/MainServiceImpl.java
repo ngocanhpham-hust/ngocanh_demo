@@ -27,15 +27,15 @@ public class MainServiceImpl implements MainService {
 
         // name
         String name = person.getName();
-        if (Objects.isNull(person) || name.length() < 10 || name.length() > 100) {
+        if (Objects.isNull(name) || name.length() < 10 || name.length() > 100) {
             serviceResponse.setCode(0);
             serviceResponse.setMsg("Name invalid");
             return serviceResponse;
         }
-        Pattern pattern3 = Pattern.compile("[^a-zA-Z ]", Pattern.CASE_INSENSITIVE);
-        Matcher matcher3 = pattern3.matcher(name);
-        boolean matchFound3 = matcher3.find();
-        if(matchFound3) {
+        Pattern patternNonSpecial = Pattern.compile("[^a-zA-Z ]", Pattern.CASE_INSENSITIVE);
+        Matcher matcherName = patternNonSpecial.matcher(name);
+        boolean matchName = matcherName.find();
+        if(matchName) {
             serviceResponse.setCode(0);
             serviceResponse.setMsg("Name invalid");
             return serviceResponse;
@@ -43,7 +43,7 @@ public class MainServiceImpl implements MainService {
 
         // age
         int age = person.getAge();
-        if (Objects.isNull(person) || age < 0) {
+        if (age <= 0) {
             serviceResponse.setCode(0);
             serviceResponse.setMsg("Age invalid");
             return serviceResponse;
@@ -74,10 +74,10 @@ public class MainServiceImpl implements MainService {
             return serviceResponse;
         }
 
-        Pattern pattern1 = Pattern.compile("[^0-9]", Pattern.CASE_INSENSITIVE);
-        Matcher matcher1 = pattern1.matcher(phoneNumber);
-        boolean matchFound1 = matcher1.find();
-        if(matchFound1) {
+        Pattern patternNumber = Pattern.compile("[^0-9]", Pattern.CASE_INSENSITIVE);
+        Matcher matcherNumber = patternNumber.matcher(phoneNumber);
+        boolean matchFound = matcherNumber.find();
+        if(matchFound) {
             serviceResponse.setCode(0);
             serviceResponse.setMsg("Phone number invalid");
             return serviceResponse;
@@ -104,10 +104,10 @@ public class MainServiceImpl implements MainService {
             return serviceResponse;
         }
 
-        Pattern pattern2 = Pattern.compile("[^0-9]", Pattern.CASE_INSENSITIVE);
-        Matcher matcher2 = pattern2.matcher(idNumber);
-        boolean matchFound2 = matcher2.find();
-        if(matchFound2) {
+        Matcher matcherId = patternNumber.matcher(idNumber);
+        boolean matchIdFound = matcherId.find();
+
+        if(matchIdFound) {
             serviceResponse.setCode(0);
             serviceResponse.setMsg("ID Number invalid");
             return serviceResponse;
