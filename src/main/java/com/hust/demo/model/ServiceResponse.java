@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 public class ServiceResponse {
     private int code;// 1 success | 0 fail
     private String msg;
+    private String province;
+    private String gender;
+    private String yob;
 }
