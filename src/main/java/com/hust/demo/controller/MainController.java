@@ -37,7 +37,4 @@ public class MainController {
         MainServiceImpl main = new MainServiceImpl();
         return "Thông tin của " + user + " đã lưu thành công";
     }
-
-
-
 }
